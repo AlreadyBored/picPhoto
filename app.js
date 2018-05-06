@@ -1,1 +1,1 @@
-asd s sss
+'use strict'
