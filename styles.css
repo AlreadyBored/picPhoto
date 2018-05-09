@@ -84,22 +84,6 @@
   padding-top: 398px;
 }
 
-.card1-pic {
-  border: 1px solid blue;
-  border-radius: 50%;
-  float: left;
-  width: 40px;
-  height: 40px;
-}
-
-.card1-photo {
-  border: 1px solid blue;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  float: right;
-}
-
 .card2-1 {
   position: relative;
   float: left;
@@ -117,7 +101,7 @@
   float: right;
 }
 
-.card2-pic {
+.card-pic {
   border: 1px solid blue;
   border-radius: 50%;
   float: left;
@@ -125,7 +109,7 @@
   height: 40px;
 }
 
-.card2-photo {
+.card-photo {
   border: 1px solid blue;
   border-radius: 50%;
   width: 40px;
