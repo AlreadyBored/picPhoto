@@ -61,73 +61,73 @@
 	
 	const levelsData2 = [{
 		lvlType: 2,
-		src1: `src1`,
-		src2: `src2`
+		src1: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
+		src2: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`
 	},
 	{
 		lvlType: 2,
-		src1: `src3`,
-		src2: `src4`
+		src1: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
+		src2: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`
 	},
 	{
 		lvlType: 2,
-		src1: `src5`,
-		src2: `src6`
+		src1: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
+		src2: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`
 	},
 	{
 		lvlType: 2,
-		src1: `src7`,
-		src2: `src8`
+		src1: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
+		src2: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`
 	},
 	{
 		lvlType: 2,
-		src1: `src9`,
-		src2: `src10`
+		src1: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
+		src2: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`
 	},
 	{
 		lvlType: 2,
-		src1: `src11`,
-		src2: `src12`
+		src1: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
+		src2: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`
 	}];
 	
 	const levelsData3 = [{
 		lvlType: 3,
-		src1: `src1`,
-		src2: `src2`,
-		src3: `src3`
+		src1: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
+		src2: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
+		src3: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`
 	},
 	{
 		lvlType: 3,
-		src1: `src4`,
-		src2: `src5`,
-		src3: `src6`
+		src1: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
+		src2: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
+		src3: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`
 	},
 	{
 		lvlType: 3,
-		src1: `src7`,
-		src2: `src8`,
-		src3: `src9`
+		src1: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
+		src2: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
+		src3: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`
 	},
 	{
 		lvlType: 3,
-		src1: `src10`,
-		src2: `src11`,
-		src3: `src12`
+		src1: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
+		src2: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
+		src3: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`
 	},
 	{
 		lvlType: 3,
-		src1: `src13`,
-		src2: `src14`,
-		src3: `src15`
+		src1: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
+		src2: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
+		src3: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`
 	},
 	{
 		lvlType: 3,
-		src1: `src16`,
-		src2: `src17`,
-		src3: `src18`
+		src1: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
+		src2: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
+		src3: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`
 	}];
 	
-	window.Engine = Object.freeze({
+	window.Engine = {
 		renderStatus(options) {
 			currentStatus.lives = options.lives;
 			currentStatus.level = options.level;
@@ -161,23 +161,25 @@
 				case 2:
 				card1.style.backgroundImage = `url(${options.src1})`;
 				card2.style.backgroundImage = `url(${options.src2})`;
-				scene.appendChild(card1);
-				scene.appendChild(card2);
+				container.appendChild(card1);
+				container.appendChild(card2);
 				break;
 
 				case 3:
 				card1.style.backgroundImage = `url(${options.src1})`;
 				card2.style.backgroundImage = `url(${options.src2})`;
 				card3.style.backgroundImage = `url(${options.src3})`;
-				scene.appendChild(card3);	
-				scene.appendChild(card4);	
-				scene.appendChild(card5);	
+				container.appendChild(card3);	
+				container.appendChild(card4);	
+				container.appendChild(card5);	
 				break;
-				
 			}
-			
 		}
-	})
+    
+    gameOver(options) {
+      //...
+    }
+	};
 }
 
 
