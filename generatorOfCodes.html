@@ -1,0 +1,28 @@
+<html>
+<head></head>
+<body>
+<script>
+//2, 5, 6; Σ % 3 = 0 & Σ % 4 = 0;
+const getRandom = array => array[Math.floor(Math.random() * array.length)];
+
+const allNums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+const arrayForPics = [3, 6, 9];
+const arrayForPhotos = [4, 8];
+const generateCode = (x, iterations) => {
+	const output = [];
+	if(x === 1) {
+		document.write(`Pics codes: `);
+		for(let i = 0; i < iterations; i++) {
+			output.push(`${getRandom(allNums)}${getRandom(arrayForPics)}${getRandom(allNums)}${getRandom(allNums)}${getRandom(arrayForPics)}${getRandom(arrayForPics)}${getRandom(allNums)}${getRandom(allNums)}${getRandom(allNums)}`);	
+		}
+	} else if (x === 2) {
+		document.write(`Photos codes: `);
+		for(let i = 0; i < iterations; i++) {
+			output.push(`${getRandom(allNums)}${getRandom(arrayForPhotos)}${getRandom(allNums)}${getRandom(allNums)}${getRandom(arrayForPhotos)}${getRandom(arrayForPhotos)}${getRandom(allNums)}${getRandom(allNums)}${getRandom(allNums)}`);
+		}
+	}
+	document.write(output.join(`, `));
+}
+</script>
+</body>
+</html>

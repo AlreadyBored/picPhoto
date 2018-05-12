@@ -39,7 +39,9 @@
 	card5.appendChild(cardPic.cloneNode());
 	card5.appendChild(cardPhoto.cloneNode());
 	
-	const currentStatus = {};
+	const currentStatus = {},
+	currentChoice = {};
+	
 	let timer;
 	let tickCounter = 30;
 	
@@ -110,7 +112,11 @@
 		src3: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`
 	}];
 	
-  
+	const choosingTypeHandler = e => {
+		const target = e.target;
+		
+	};
+	
 	const Engine = Object.freeze({
 		renderStatus(options) {
 			currentStatus.lives = options.lives;
@@ -146,17 +152,17 @@
 			timer = setInterval(tick, 1000);
 		},
 		
-    clearScene() {
-      container.innerHTML = ``;
-    },
+		clearScene() {
+			container.innerHTML = ``;
+		},
     
 		renderScene(options) {
-      this.clearScene();
+			this.clearScene();
 			switch(options.lvlType) {
 				case 2:
-        card1.style.backgroundImage = `url(${getRandomUnique(levelsData2)})`;
+				card1.style.backgroundImage = `url(${getRandomUnique(levelsData2)})`;
 				card2.style.backgroundImage = `url(${getRandomUnique(levelsData2)})`;
-        container.appendChild(card1);
+				container.appendChild(card1);
 				container.appendChild(card2);
 				break;
 
@@ -169,8 +175,8 @@
 				container.appendChild(card5);	
 				break;
         
-        default:
-        throw new Error(`Wrong type of level!`);
+				default:
+				throw new Error(`Wrong type of level!`);
 			};
 		},
     
@@ -189,6 +195,5 @@
     }
   })();
 }
-
 
 
