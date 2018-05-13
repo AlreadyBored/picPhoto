@@ -121,6 +121,42 @@
   // If returns true => photo, false => picture
   const checkCodeType = code => (+code.slice(-8, 1) + +code.slice(-9, 1) + +code.slice(-12, 1)) % 4 === 0;
   
+  const choosingTypeHandler = e => {
+		const target = e.target;
+    
+    if(!target.classList.contains(`card-photo`) && !target.classList.contains(`card-pic`)) return;
+    
+    const parentNode = target.parentNode,
+    siblingNext = target.nextElementSibling,
+    siblingPrevious = target.previousElementSibling,
+    type = checkCodeType(parentNode.style.backgroundImage);
+    
+    let result;
+    
+    target.classList.toggle(`chosen`);
+    
+    if(target.classList.contains(`card-pic`)){
+      type ? result = false : result = true;
+    }
+    
+    if(target.classList.contains(`card-photo`)) {
+      type ? result = true : result = false;
+    }
+    
+    if(result && !target.classList.contains(`chosen`)) result = false;
+    
+    if(parentNode.classList.contains(`card1-1`) || parentNode.classList.contains(`card2-1`)) {
+      currentlyChosen.answers[0] = result;
+    } else if(parentNode.classList.contains(`card1-2`) || parentNode.classList.contains(`card2-2`)) {
+      currentlyChosen.answers[1] = result;
+    } else {
+      currentlyChosen.answers[2] = result;
+    }
+    
+    siblingNext ? siblingNext.classList.remove(`chosen`) :
+    siblingPrevious.classList.remove(`chosen`);
+	};
+  
 	const Engine = Object.freeze({
 		renderStatus(options) {
 			currentStatus.lives = options.lives;
@@ -214,56 +250,15 @@
     },
     
     nextLevel(options){
-      renderScene(options);
-      renderStatus(options);
+      this.renderScene(options);
+      this.renderStatus(options);
     },
     
     gameOver(options) {
       document.body.innerHTML = ``;
       document.body.textContent = `GAME OVER`;
     }
-	});
-  
-  const choosingTypeHandler = e => {
-		const target = e.target;
-    
-    if(!target.classList.contains(`card-photo`) && !target.classList.contains(`card-pic`)) return;
-    
-    const parentNode = target.parentNode,
-    siblingNext = target.nextElementSibling,
-    siblingPrevious = target.previousElementSibling,
-    type = checkCodeType(parentNode.style.backgroundImage);
-    
-    let result;
-    
-    target.classList.toggle(`chosen`);
-    
-    if(target.classList.contains(`card-pic`)){
-      type ? result = false : result = true;
-    }
-    
-    if(target.classLis.contains(`card-photo`)) {
-      type ? result = true : result = false;
-    }
-    
-    if(result && !target.classList.contains(`chosen`)) result = false;
-    
-    if(parentNode.classList.contains(`card1-1`) || parentNode.classList.contains(`card2-1`)) {
-      currentlyChosen.answers[0] = result;
-    } else if(parentNode.classList.contains(`card1-2`) || parentNode.classList.contains(`card2-2`)) {
-      currentlyChosen.answers[1] = result;
-    } else {
-      currentlyChosen.answers[2] = result;
-    }
-    
-    siblingNext ? siblingNext.classList.remove(`chosen`) :
-    siblingPrevious.classList.remove(`chosen`);
-	};
-	
-  const nextLevelHandler = e => { 
-    EngineEntrance.checkLevelOutcome();
-    EngineEntrance.nextLevel(Object.assign(currentStatus, getRandomLvlType()));
-  };
+	});  
   
   window.EngineEntrance = (() => {
     return {
@@ -276,6 +271,11 @@
       addHandlers: Engine.addHandlers
     }
   })();
+  
+  const nextLevelHandler = e => { 
+    EngineEntrance.checkLevelOutcome();
+    EngineEntrance.nextLevel(Object.assign(currentStatus, getRandomLvlType()));
+  };
 }
 
 const test = () => {
