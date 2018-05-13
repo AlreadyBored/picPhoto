@@ -62,56 +62,45 @@
 	
   
 	const levelsData2 = [
-		`file:///D:/JS/picPhoto/images/02-PHOTO.jpg`,
-		`file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
-		`file:///D:/JS/picPhoto/images/03-PHOTO.jpg`,
-		`file:///D:/JS/picPhoto/images/04-PHOTO.jpg`,
-		`file:///D:/JS/picPhoto/images/05-PHOTO.jpg`,
-		`file:///D:/JS/picPhoto/images/06-PHOTO.jpg`,
-		`file:///D:/JS/picPhoto/images/07-PHOTO.jpg`,
-		`file:///D:/JS/picPhoto/images/08-PHOTO.jpg`,
-		`file:///D:/JS/picPhoto/images/09-PHOTO.jpg`,
-		`file:///D:/JS/picPhoto/images/10-PHOTO.jpg`,
-		`file:///D:/JS/picPhoto/images/11-PHOTO.jpg`,
+		`014019894`,
+    `015419511`,
+    `045784200`,
+    `088148729`,
+    `108399674`,
+    `147344416`,
+    `148984220`,
+    `149888649`,
+    `209109608`,
+    `245148128`,
+    `249284765`,
+    `284648156`,
+    `301700303`,
+    `341384159`,
+    `346144634`,
+    `346348974`,
+    `383988344`,
+    `398400743`,
+    `442748315`,
+    `486044545`,
+    `599491437`,
+    `607809806`,
+    `615809195`,
+    `617690196`,
+    `640784746`,
+    `688844308`,
+    `712799787`,
+    `786188524`,
+    `791790177`,
+    `802999257`,
+    `810801126`,
+    `847384162`,
+    `896000334`,
+    `995209102`,
+    `998710227`
   ];
 	
-	const levelsData3 = [{
-		lvlType: 3,
-		src1: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
-		src2: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
-		src3: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`
-	},
-	{
-		lvlType: 3,
-		src1: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
-		src2: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
-		src3: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`
-	},
-	{
-		lvlType: 3,
-		src1: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
-		src2: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
-		src3: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`
-	},
-	{
-		lvlType: 3,
-		src1: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
-		src2: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
-		src3: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`
-	},
-	{
-		lvlType: 3,
-		src1: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
-		src2: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
-		src3: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`
-	},
-	{
-		lvlType: 3,
-		src1: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
-		src2: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`,
-		src3: `file:///D:/JS/picPhoto/images/01-PHOTO.jpg`
-	}];
-	
+  const concatenateRoute = centralPart => `file:///D:/JS/picPhoto/images/${centralPart}.jpg`;
+  
 	const choosingTypeHandler = e => {
 		const target = e.target;
 		
@@ -160,16 +149,16 @@
 			this.clearScene();
 			switch(options.lvlType) {
 				case 2:
-				card1.style.backgroundImage = `url(${getRandomUnique(levelsData2)})`;
-				card2.style.backgroundImage = `url(${getRandomUnique(levelsData2)})`;
+				card1.style.backgroundImage = `url(${concatenateRoute(getRandomUnique(levelsData2))})`;
+				card2.style.backgroundImage = `url(${concatenateRoute(getRandomUnique(levelsData2))})`;
 				container.appendChild(card1);
 				container.appendChild(card2);
 				break;
 
 				case 3:
-				card3.style.backgroundImage = `url(${getRandomUnique(levelsData2)})`;
-				card4.style.backgroundImage = `url(${getRandomUnique(levelsData2)})`;
-				card5.style.backgroundImage = `url(${getRandomUnique(levelsData2)})`;
+				card3.style.backgroundImage = `url(${concatenateRoute(getRandomUnique(levelsData2))})`;
+				card4.style.backgroundImage = `url(${concatenateRoute(getRandomUnique(levelsData2))})`;
+				card5.style.backgroundImage = `url(${concatenateRoute(getRandomUnique(levelsData2))})`;
 				container.appendChild(card3);	
 				container.appendChild(card4);	
 				container.appendChild(card5);	
@@ -183,6 +172,11 @@
     gameOver(options) {
       document.body.innerHTML = ``;
       document.body.textContent = `GAME OVER`;
+    },
+    
+    // If returns true => photo, else => picture
+    checkCodeType(code) {
+      return (+code.slice(-4, 1) + +code.slice(-5, 1) + +code.slice(-8, 1)) % 4 === 0;
     }
 	});
   
