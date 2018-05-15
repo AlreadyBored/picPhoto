@@ -9,14 +9,11 @@
   level = document.querySelector(`.level`),
   container = document.querySelector(`.container.clearfix`),
   nextLvlButton = document.getElementById(`next-level`),
+  startButton = document.getElementById(`start-button`),
   initialStatus = Object.freeze({
   lives: 3,
-  level: 1
+  level: -1
   }),
-  currentStatus = {
-    lives: 3,
-    level: 1
-  },
   currentlyChosen = {
     // 2 || 3
     lvl: 0,
@@ -76,13 +73,14 @@
     На прохождение уровня отведено 30 секунд, также имеются 3 "жизни", которые отнимаются за проваленный
     уровень. Уровень считается проваленным, если вы выбрали типы неверно или не успели дать ответ по истечении
     30 секунд. Выбор типа изображения осуществляется посредством клика на соответствующей иконке внизу изображения,
-    после чего нужно нажать кнопку "Далее". Уровни бывают 2-х типов: с 2-мя и 3-мя изображениями`
+    после чего нужно нажать кнопку "Далее". Уровни бывают 2-х типов: с 2-мя и 3-мя изображениями`,
     loose: `Вы проиграли!`,
     victory: `Вы победили!`
   };
   
   let timer,
-  tickCounter = 30;
+  tickCounter = 30,
+  currentStatus = {};
 
   card1.className = (`card2-1 clearfix`);
   card2.className = (`card2-2 clearfix`);
@@ -242,30 +240,42 @@
     addHandlers() {
       scene.addEventListener(`click`, choosingTypeHandler);
       nextLvlButton.addEventListener(`click`, nextLevelHandler);
+      startButton.addEventListener(`click`, startButtonHandler);
     },
     
     // Time rest from every level counter should be added here
     checkLevelOutcome() {
-    switch(currentlyChosen.lvl) {
+      const pics = document.getElementsByClassName(`card-pic`),
+      photos = document.getElementsByClassName(`card-photo`),
+      res = [];
+      for (let i = 0; i < pics.length; i++) {
+        res.push(!pics[i].classList.contains(`chosen`) && !photos[i].classList.contains(`chosen`));
+      }
+      if(res[0] && res[1] && res[res.length - 1]) { 
+        currentStatus.lives--;
+        return;
+      }
+    
+      switch(currentlyChosen.lvl) {
         case 2:
-        if (!(currentlyChosen.answers[0] && currentlyChosen.answers[1])) {
+          if (!(currentlyChosen.answers[0] && currentlyChosen.answers[1])) {
           currentStatus.lives--;
-        }
+          }
         break;
         
         case 3:
-        if (!(currentlyChosen.answers[0] && currentlyChosen.answers[1] && currentlyChosen.answers[2])) {
+          if (!(currentlyChosen.answers[0] && currentlyChosen.answers[1] && currentlyChosen.answers[2])) {
           currentStatus.lives--;
-        }
+          }
         break;
         
         default:
-        throw new Error(`Wrong type of level has been detected when checking outcome`);
+          throw new Error(`Wrong type of level has been detected when checking outcome`);
         break;
       }
     },
     
-    nextLevel(options){
+    nextLevel(options) {
       const pics = document.getElementsByClassName(`card-pic`),
       photos = document.getElementsByClassName(`card-photo`);
       for (let i = 0; i < pics.length; i++) {
@@ -279,6 +289,7 @@
     switchToRules() {
       container.innerHTML = ``;
       container.textContent = textData.rules;
+      
     },
     
     startGame() {
@@ -286,7 +297,7 @@
       container.textContent = textData.start;
     },
     
-    loose(options) {
+    loose() {
       container.innerHTML = ``;
       container.textContent = textData.loose;
     }
@@ -304,14 +315,35 @@
     }
   })();
   
-  const nextLevelHandler = e => { 
+  const nextLevelHandler = e => {
+    currentStatus.level++;  
     EngineInstance.checkLevelOutcome();
     EngineInstance.nextLevel(Object.assign(currentStatus, getRandomLvlType()));
   };
-}
-
-const test = () => {
-  EngineInstance.renderScene({lvlType: 3});
+  
+  function startButtonHandler (e) {
+    switch(currentStatus.level) {
+      case -1:
+      Engine.startGame();
+      currentStatus.level++;
+      this.textContent = `Read the rules`;
+      break;
+      
+      case 0:
+      Engine.switchToRules();
+      currentStatus.level++;
+      this.textContent = `Play game!`;
+      break;
+      
+      case 1:
+      this.classList.add(`hidden`);
+      EngineInstance.nextLevel(Object.assign(currentStatus, getRandomLvlType()));
+      nextLvlButton.classList.remove(`hidden`);
+    }
+  }
+  
+  currentStatus = Object.assign(currentStatus, initialStatus);
   EngineInstance.addHandlers();
 }
+
 
