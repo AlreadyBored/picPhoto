@@ -2,11 +2,11 @@
 <head></head>
 <body>
 <script>
-//2, 5, 6; Σ % 4 /= 0 & Σ % 4 = 0;
+//2, 5, 6; Σ % 4 ≠ 0 & Σ % 4 = 0;
 const getRandom = array => array[Math.floor(Math.random() * array.length)];
 
 const allNums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
-const arrayForPics = [0, 1, 9];
+const arrayForPics = [1, 7, 9];
 const arrayForPhotos = [4, 8];
 const generateCode = (x, iterations) => {
 	const output = document.createElement(`ol`);
