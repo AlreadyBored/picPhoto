@@ -1,7 +1,7 @@
-* {
+/* * {
   outline: 1px dashed red;
 } 
-
+ */
 .game {
   border: 1px solid blue;
   width: 1280px;
@@ -10,15 +10,15 @@
 }
 
 .screen {
-  margin: 20px auto 0 auto;
-  width: 800px;
-  height: 600px;
-  background-color: rgba(255, 0, 0, 0.1);
+  margin: 0 auto;
+  width: 1280px;
+  height: 700px;
 }
 
 .status {
-  width: 800px;
+  width: 1280px;
   height: 75px;
+  border-bottom: 1px solid black;
 }
 
 .status > div {
@@ -28,21 +28,18 @@
   height: 55px;
 }
 
-.status > div:not(:last-child) {
-  margin-right: 96px;
-}
-
 .lives {
+  margin-right: 336px;
   font-size: 36px;
   text-align: center;
   padding-top: 20px;
 }
 
 .timer {
+  margin-right: 336px;
   padding-top: 20px;
   font-size: 36px;
-  text-align: center;
-  
+  text-align: center; 
 }
 
 .level {  
@@ -53,94 +50,108 @@
 
 .scene {
   padding: 43px 13px 43px 13px;
-  width: 774px;
+  width: 1254px;
   height: 437px;
 }
 
-/*
-Картинки: 270*440(если 3), 390*440(если 2), k = 0.857(w), 0.859(h)
-*/
-
 .card1-1 {
+  outline: 10px ridge red;
   float: left;
-  width: 250px;
+  width: 410px;
   height: 42px;
   padding-top: 398px;
   margin-right: 11px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-clip: padding-box;
+  background-origin: padding-box;
+  background-size: 410px 440px;
 }
 
 .card1-2 {
+  outline: 10px ridge red;
   float: left;
-  width: 250px;
+  width: 410px;
   height: 42px;
   padding-top: 398px;
   margin-right: 11px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-clip: padding-box;
+  background-origin: padding-box;
+  background-size: 410px 440px;
 }
 
 .card1-3 {
+  outline: 10px ridge red;
   float: right;
-  width: 250px;
+  width: 410px;
   height: 42px;
   padding-top: 398px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-clip: padding-box;
+  background-origin: padding-box;
+  background-size: 410px 440px;
 }
 
 .card2-1 {
+  outline: 10px ridge red;
   position: relative;
   float: left;
-  width: 385px;
+  width: 560px;
   height: 42px;
   padding-top: 398px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 560px 440px;
 }
 
 .card2-2{
+  outline: 10px ridge red;
   position: relative;
   float: right;
-  width: 385px;
+  width: 560px;
   height: 42px;
   padding-top: 398px;
   float: right;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 560px 440px;
 }
 
 .card-pic {
   cursor: pointer;
   z-index: 100;
-  background-size: contain;
+  background-size: 30px 30px;
   background-image: url(file:///D:/JS/picPhoto/compact-image.png);
   background-repeat: no-repeat;
   background-position: center;
-  border: 1px solid blue;
   border-radius: 50%;
   float: left;
   width: 40px;
   height: 40px;
 }
 
-.card-pic{
-  cursor: pointer;
-  z-index: 100;
-  background-size: contain;
-  background-image: url(file:///D:/JS/picPhoto/compact-image.png);
-  background-repeat: no-repeat;
-  background-position: center;
-  border: 1px solid blue;
-  border-radius: 50%;
-  float: left;
-  width: 40px;
-  height: 40px;
+.card-pic:hover {
+  background-size: 37px 37px;
 }
 
 .card-photo {
   cursor: pointer;
   z-index: 100;
-  background-size: contain;
+  background-size: 30px 30px;
   background-image: url(file:///D:/JS/picPhoto/compact-camera.png);
   background-repeat: no-repeat;
   background-position: center;
-  border: 1px solid blue;
   border-radius: 50%;
   width: 40px;
   height: 40px;
   float: right;
+}
+
+.card-photo:hover {
+  background-size: 37px 37px;
 }
 
 .chosen {
@@ -159,9 +170,27 @@
   margin-right: auto;
 }
 
+.start {
+  text-align: center;
+  width: 200px;
+  margin-top: 196px;
+}
+
+.button:hover {
+  border: 3px solid red;
+}
+
+.next-level.button {
+  padding: 0 15px 25px 15px;
+  text-align: center;
+  font-size: 45px;
+  margin-top: -175px;
+}
+
 .container {
   margin-left: auto;
   margin-right: auto;
+  text-align: center;
 }
 
 .clearfix::after {
@@ -171,5 +200,5 @@
 }
 
 .hidden {
-  display: none;
+  visibility: hidden;
 }

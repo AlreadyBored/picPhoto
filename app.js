@@ -14,14 +14,14 @@
   lives: 3,
   level: -1
   }),
+  gameResults = {
+    timeRest: 0,
+    livesRest: 0
+  },
   currentlyChosen = {
     // 2 || 3
     lvl: 0,
-    answers: [
-      true,
-      true,
-      true
-    ]
+    answers: []
   },
   card1 = document.createElement(`div`),
   card2 = document.createElement(`div`),
@@ -76,11 +76,10 @@
     после чего нужно нажать кнопку "Далее". Уровни бывают 2-х типов: с 2-мя и 3-мя изображениями`,
     loose: `Вы проиграли!`,
     victory: `Вы победили!`
-  };
-  
-  let timer,
-  tickCounter = 30,
-  currentStatus = {};
+  }
+  let currentStatus = {},
+  timer,
+  tickCounter = 30;
 
   card1.className = (`card2-1 clearfix`);
   card2.className = (`card2-2 clearfix`);
@@ -125,7 +124,6 @@
   };
   
   const concatenatePath = centralPart => `file:///D:/JS/picPhoto/images/${centralPart}.jpg`;
-  
   
   //                                   123456789
   //url("file:///D:/JS/picPhoto/images/688844308.jpg")
@@ -273,6 +271,8 @@
           throw new Error(`Wrong type of level has been detected when checking outcome`);
         break;
       }
+      gameResults.livesRest += currentStatus.lives;
+      gameResults.timeRest += +timerBlock.innerHTML;
     },
     
     nextLevel(options) {
@@ -289,7 +289,6 @@
     switchToRules() {
       container.innerHTML = ``;
       container.textContent = textData.rules;
-      
     },
     
     startGame() {
@@ -299,7 +298,9 @@
     
     loose() {
       container.innerHTML = ``;
-      container.textContent = textData.loose;
+      nextLvlButton.classList.add(`hidden`);
+      status.classList.add(`hidden`);
+      container.textContent = `${textData.loose}\nЖизней неизрасходовано: ${gameResults.livesRest}\nВремени неизрасходовано: ${gameResults.timeRest}\n`;
     }
   });  
   
@@ -311,7 +312,10 @@
       renderScene: Engine.renderScene,
       clearScene: Engine.clearScene,
       loose: Engine.loose,
-      addHandlers: Engine.addHandlers
+      addHandlers: Engine.addHandlers,
+      checkResults: function() {
+        console.log(gameResults);
+      }
     }
   })();
   
@@ -326,18 +330,19 @@
       case -1:
       Engine.startGame();
       currentStatus.level++;
-      this.textContent = `Read the rules`;
+      this.textContent = `Перейти к правилам`;
       break;
       
       case 0:
       Engine.switchToRules();
       currentStatus.level++;
-      this.textContent = `Play game!`;
+      this.textContent = `Играть!`;
       break;
       
       case 1:
       this.classList.add(`hidden`);
       EngineInstance.nextLevel(Object.assign(currentStatus, getRandomLvlType()));
+      status.classList.remove(`hidden`);  
       nextLvlButton.classList.remove(`hidden`);
     }
   }
