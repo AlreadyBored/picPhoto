@@ -3,6 +3,11 @@
 } 
  */
 .game {
+  font-size: 36px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  cursor: default;
   border: 1px solid blue;
   width: 1280px;
   height: 700px;
@@ -16,6 +21,7 @@
 }
 
 .status {
+  font-size: 0;
   width: 1280px;
   height: 75px;
   border-bottom: 1px solid black;
@@ -159,6 +165,7 @@
 }
 
 .button {
+  font-size: 16px;
   cursor: pointer;
   z-index: 100;
   background-color: rgba(0, 255, 0, 0.5);
@@ -187,6 +194,11 @@
   margin-top: -175px;
 }
 
+.star {
+  font-size: 36px;
+  color: red;
+}
+
 .container {
   margin-left: auto;
   margin-right: auto;
@@ -201,4 +213,8 @@
 
 .hidden {
   visibility: hidden;
+}
+
+.invisible {
+  display: none;
 }

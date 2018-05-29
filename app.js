@@ -1,5 +1,4 @@
-'use strict'
-  
+'use strict';
 {
   const screen = document.querySelector(`.screen`),
   status = document.querySelector(`.status`),
@@ -10,16 +9,20 @@
   container = document.querySelector(`.container.clearfix`),
   nextLvlButton = document.getElementById(`next-level`),
   startButton = document.getElementById(`start-button`),
+  restartButton = document.getElementById(`restart-button`),
   initialStatus = Object.freeze({
   lives: 3,
   level: -1
+  }),
+  initialStatusRestart = Object.freeze({
+    lives: 3,
+    level: 0
   }),
   gameResults = {
     timeRest: 0,
     livesRest: 0
   },
   currentlyChosen = {
-    // 2 || 3
     lvl: 0,
     answers: []
   },
@@ -30,7 +33,7 @@
   card5 = document.createElement(`div`),
   cardPic = document.createElement(`div`),
   cardPhoto = document.createElement(`div`),
-  levelsData2 = [
+  imagesDataInitial = Object.freeze([
     `014019894`,
     `015419511`,
     `045784200`,
@@ -66,7 +69,7 @@
     `896000334`,
     `995209102`,
     `998710227`
-  ],
+  ]),
   textData = {
     start: `Добро пожаловать в игру "Pic or Photo"! Для продолжения нажмите кнопку "Старт"`,
     rules: `Ваша задача — определить, являются представленные изображения рисунком или фотографией.
@@ -74,10 +77,12 @@
     уровень. Уровень считается проваленным, если вы выбрали типы неверно или не успели дать ответ по истечении
     30 секунд. Выбор типа изображения осуществляется посредством клика на соответствующей иконке внизу изображения,
     после чего нужно нажать кнопку "Далее". Уровни бывают 2-х типов: с 2-мя и 3-мя изображениями`,
-    loose: `Вы проиграли!`,
+    gameOver: `Игра окончена!`,
     victory: `Вы победили!`
   }
+  
   let currentStatus = {},
+  imagesData = Object.assign([], imagesDataInitial),
   timer,
   tickCounter = 30;
 
@@ -104,10 +109,8 @@
   const tick = () => {
     timerBlock.textContent = tickCounter--;
     if (!(+tickCounter)) {
-      Engine.loose({
-        //Дописать статы на завершение
-      })
-      clearInterval(timer);
+      nextLevelHandler();
+      //clearInterval(timer);
     }
   };
   
@@ -123,10 +126,9 @@
     return array.splice((Math.floor(Math.random() * array.length)), 1);
   };
   
-  const concatenatePath = centralPart => `file:///D:/JS/picPhoto/images/${centralPart}.jpg`;
+ const concatenatePath = centralPart => `file:///D:/JS/picPhoto/images/${centralPart}.jpg`;
+ // const concatenatePath = centralPart => `https://raw.githubusercontent.com/AlreadyBored/picPhoto/master/images/${centralPart}.jpg`;
   
-  //                                   123456789
-  //url("file:///D:/JS/picPhoto/images/688844308.jpg")
   // If returns true => photo, false => picture
   const checkCodeType = code => ((+code.slice(-10, -9) + +code.slice(-11, -10) + +code.slice(-14, -13)) % 4) === 0;
   
@@ -187,7 +189,9 @@
         break;
         
         case 0:
-        this.loose();
+        clearInterval(timer);
+        this.gameOver();
+        return;
         break;
         
         default:
@@ -211,49 +215,50 @@
       switch(options.lvlType) {
         case 2:
         currentlyChosen.lvl = 2;
-        card1.style.backgroundImage = `url(${concatenatePath(getRandomUnique(levelsData2))})`;
-        card2.style.backgroundImage = `url(${concatenatePath(getRandomUnique(levelsData2))})`;
+        card1.style.backgroundImage = `url(${concatenatePath(getRandomUnique(imagesData))})`;
+        card2.style.backgroundImage = `url(${concatenatePath(getRandomUnique(imagesData))})`;
         container.appendChild(card1);
         container.appendChild(card2);
         break;
 
         case 3:
         currentlyChosen.lvl = 3;
-        card3.style.backgroundImage = `url(${concatenatePath(getRandomUnique(levelsData2))})`;
-        card4.style.backgroundImage = `url(${concatenatePath(getRandomUnique(levelsData2))})`;
-        card5.style.backgroundImage = `url(${concatenatePath(getRandomUnique(levelsData2))})`;
+        card3.style.backgroundImage = `url(${concatenatePath(getRandomUnique(imagesData))})`;
+        card4.style.backgroundImage = `url(${concatenatePath(getRandomUnique(imagesData))})`;
+        card5.style.backgroundImage = `url(${concatenatePath(getRandomUnique(imagesData))})`;
         container.appendChild(card3);  
         container.appendChild(card4);  
         container.appendChild(card5);  
         break;
-        
-        case `start`:
-        
-        
+                
         default:
         throw new Error(`Wrong type of level!`);
       };
+    },
+    
+    addMinorResults() {
+      gameResults.livesRest += currentStatus.lives;
+      gameResults.timeRest += +timerBlock.innerHTML;
     },
     
     addHandlers() {
       scene.addEventListener(`click`, choosingTypeHandler);
       nextLvlButton.addEventListener(`click`, nextLevelHandler);
       startButton.addEventListener(`click`, startButtonHandler);
+      restartButton.addEventListener(`click`, restartButtonHandler);
     },
     
-    // Time rest from every level counter should be added here
     checkLevelOutcome() {
       const pics = document.getElementsByClassName(`card-pic`),
-      photos = document.getElementsByClassName(`card-photo`),
-      res = [];
+      photos = document.getElementsByClassName(`card-photo`);
       for (let i = 0; i < pics.length; i++) {
-        res.push(!pics[i].classList.contains(`chosen`) && !photos[i].classList.contains(`chosen`));
+        if(!pics[i].classList.contains(`chosen`) && !photos[i].classList.contains(`chosen`)) {
+          currentStatus.lives--;
+          this.addMinorResults();
+          return;
+        }
       }
-      if(res[0] && res[1] && res[res.length - 1]) { 
-        currentStatus.lives--;
-        return;
-      }
-    
+
       switch(currentlyChosen.lvl) {
         case 2:
           if (!(currentlyChosen.answers[0] && currentlyChosen.answers[1])) {
@@ -271,8 +276,8 @@
           throw new Error(`Wrong type of level has been detected when checking outcome`);
         break;
       }
-      gameResults.livesRest += currentStatus.lives;
-      gameResults.timeRest += +timerBlock.innerHTML;
+      
+      this.addMinorResults();
     },
     
     nextLevel(options) {
@@ -287,20 +292,73 @@
     },
     
     switchToRules() {
-      container.innerHTML = ``;
+      Engine.clearScene();
       container.textContent = textData.rules;
     },
     
+    restart() {
+      this.refreshImagesDatabase();
+      this.clearScene();
+      currentStatus = Object.assign({}, initialStatus);
+      startButton.classList.remove(`hidden`);
+      startButton.textContent = `Начать игру`;
+      restartButton.classList.add(`invisible`);
+    },
+    
     startGame() {
-      container.innerHTML = ``;
+      Engine.clearScene();
       container.textContent = textData.start;
     },
     
-    loose() {
-      container.innerHTML = ``;
+    gameOver() {
+      function addStars(options) {
+        let average = options.data / currentStatus.level;
+        switch(options.type) {
+          case `time`:
+            if(average >= 25) {
+              starsTime.textContent = `★★★`;
+            } else if(average >= 20) {
+              starsTime.textContent = `★★☆`;
+            } else if(average >= 10) {
+              starsTime.textContent = `★☆☆`
+            } else {
+              starsTime.textContent = `☆☆☆`
+            }
+            break;
+          
+          case `lives`:
+            if(average === 3) {
+              starsLives.textContent = `★★★`;
+            } else if(average >= 2.6) {
+              starsLives.textContent = `★★☆`;
+            } else if(average >= 1.5) {
+              starsLives.textContent = `★☆☆`;
+            } else {
+              starsLives.textContent = `☆☆☆`;
+            }
+          break;
+          
+          default:
+            throw new Error(`Wrong type of minor endgame data!`);
+        }
+    }
+            
+      Engine.clearScene();
       nextLvlButton.classList.add(`hidden`);
       status.classList.add(`hidden`);
-      container.textContent = `${textData.loose}\nЖизней неизрасходовано: ${gameResults.livesRest}\nВремени неизрасходовано: ${gameResults.timeRest}\n`;
+      restartButton.classList.remove(`invisible`);
+      container.innerHTML = `${textData.gameOver}<br>
+      Уровней пройдено: ${currentStatus.level == 10 ? currentStatus.level : currentStatus.level - 1}<br>
+      Жизней неизрасходовано: <span class='star' id='star-lives'></span><br>
+      Времени неизрасходовано: <span class='star' id='star-time'></></span>`;
+      const starsLives = document.getElementById(`star-lives`),
+      starsTime = document.getElementById(`star-time`);
+      addStars({type: `time`, data: gameResults.timeRest});
+      addStars({type: `lives`, data: gameResults.livesRest});
+    },
+    
+    refreshImagesDatabase() {
+      imagesData = Object.assign([], imagesDataInitial);
     }
   });  
   
@@ -311,7 +369,10 @@
       renderStatus: Engine.renderStatus,
       renderScene: Engine.renderScene,
       clearScene: Engine.clearScene,
-      loose: Engine.loose,
+      gameOver: Engine.gameOver,
+      changeLevel: function(x) {
+        currentStatus.level = x;
+      },
       addHandlers: Engine.addHandlers,
       checkResults: function() {
         console.log(gameResults);
@@ -319,11 +380,20 @@
     }
   })();
   
-  const nextLevelHandler = e => {
+  
+  function nextLevelHandler (e) {
+    if(currentStatus.level == 10 || !currentStatus.lives) {
+      Engine.gameOver();
+      return;
+    }
     currentStatus.level++;  
-    EngineInstance.checkLevelOutcome();
-    EngineInstance.nextLevel(Object.assign(currentStatus, getRandomLvlType()));
+    Engine.checkLevelOutcome();
+    Engine.nextLevel(Object.assign(currentStatus, getRandomLvlType()));
   };
+  
+  function restartButtonHandler(e) {
+    Engine.restart();
+  }
   
   function startButtonHandler (e) {
     switch(currentStatus.level) {
@@ -346,9 +416,20 @@
       nextLvlButton.classList.remove(`hidden`);
     }
   }
-  
+/*   const preloadImages = (() => {
+    for (let i = 0; i < imagesDataInitial.length; i++) {
+      const url = concatenatePath(imagesDataInitial[i]);
+      const img = document.createElement(`img`);
+      if(i == (imagesDataInitial.length - 1)) {
+        img.onload = function() {
+          startButton.classList.remove(`hidden`);
+        }
+        img.src = url; 
+        return;  
+      }
+      img.src = url;
+    }
+  })(); */
   currentStatus = Object.assign(currentStatus, initialStatus);
   EngineInstance.addHandlers();
 }
-
-
